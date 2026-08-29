@@ -1,6 +1,7 @@
 import { useServerFn } from "@tanstack/react-start";
 import { MessageCircle, Send, X } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
+import ReactMarkdown from "react-markdown";
 
 import { VoiceInput } from "@/components/VoiceInput";
 import { Button } from "@/components/ui/button";
@@ -123,7 +124,13 @@ export function ChatAssistant({ profile }: { profile?: Profile | null }) {
                       : "max-w-[90%] whitespace-pre-wrap rounded-2xl rounded-tl-sm bg-card px-3 py-2 text-sm shadow-[var(--shadow-soft)]"
                   }
                 >
-                  {m.content}
+                  {m.role === "assistant" ? (
+                    <div className="space-y-2 [&_a]:underline [&_li]:ml-4 [&_li]:list-disc [&_strong]:font-semibold">
+                      <ReactMarkdown>{m.content}</ReactMarkdown>
+                    </div>
+                  ) : (
+                    m.content
+                  )}
                 </div>
               ))}
               {loading && (
