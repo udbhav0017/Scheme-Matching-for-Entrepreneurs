@@ -1,7 +1,7 @@
 import { SCHEMES, SCHEME_CORPUS } from "./schemes";
 
 /** Lightweight keyword retrieval over the scheme guideline corpus (RAG). */
-function retrieve(query: string, limit = 4) {
+export function retrieve(query: string, limit = 4) {
   const chunks = SCHEME_CORPUS.split("\n\n---\n\n");
   const terms = query
     .toLowerCase()
