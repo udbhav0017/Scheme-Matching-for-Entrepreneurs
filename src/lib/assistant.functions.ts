@@ -1,0 +1,54 @@
+import { createServerFn } from "@tanstack/react-start";
+import { streamText } from "ai";
+import { z } from "zod";
+
+import { createLovableAiGatewayProvider } from "./ai-gateway.server";
+import { retrieve } from "./retrieval.server";
+
+const ChatInput = z.object({
+  messages: z
+    .array(
+      z.object({
+        role: z.enum(["user", "assistant"]),
+        content: z.string().min(1).max(4000),
+      }),
+    )
+    .min(1)
+    .max(30),
+  language: z.enum(["en", "hi"]),
+  profileSummary: z.string().max(1000).optional(),
+});
+
+export const askAssistant = createServerFn({ method: "POST" })
+  .inputValidator((input: unknown) => ChatInput.parse(input))
+  .handler(async ({ data }) => {
+    const key = process.env["LOVABLE_API_KEY"];
+    if (!key) throw new Error("AI assistant is not configured yet.");
+
+    const lastUser = [...data.messages].reverse().find((m) => m.role === "user");
+    const context = retrieve(lastUser?.content ?? "").join("\n\n---\n\n");
+
+    const gateway = createLovableAiGatewayProvider(key);
+
+    const system = [
+      "You are Saathi, a friendly government-scheme guide for marginalized entrepreneurs in India (SC, ST, OBC, Divyangjan and women).",
+      data.language === "hi"
+        ? "Reply in simple conversational Hindi (Devanagari). Keep sentences short."
+        : "Reply in simple, plain English. Keep sentences short and avoid jargon.",
+      "Answer ONLY from the scheme guidelines given below. If the answer is not there, say you are not sure and suggest visiting the official portal or the nearest bank branch.",
+      "Use short bullet points, mention exact loan amounts, subsidy percentages and required documents when relevant.",
+      "Never promise guaranteed approval. Encourage the user warmly.",
+      data.profileSummary ? `Applicant profile: ${data.profileSummary}` : "",
+      `\nSCHEME GUIDELINES:\n${context}`,
+    ]
+      .filter(Boolean)
+      .join("\n");
+
+    const result = streamText({
+      model: gateway("google/gemini-3.7-flash"),
+      system,
+      messages: data.messages,
+    });
+
+    return { reply: await result.text };
+  });
