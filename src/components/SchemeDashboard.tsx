@@ -1,9 +1,12 @@
+import { useQuery } from "@tanstack/react-query";
+import { useServerFn } from "@tanstack/react-start";
 import { AlertTriangle, ExternalLink, FileWarning, RotateCcw, Sparkles } from "lucide-react";
-import { useMemo, useState } from "react";
+import { useState } from "react";
 
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
-import { formatINR, matchSchemes, type MatchResult, type Profile } from "@/lib/matching";
+import { getMatchedSchemes } from "@/lib/matching.functions";
+import { formatINR, type MatchResult, type Profile } from "@/lib/matching";
 
 function scoreTone(score: number) {
   if (score >= 80) return { label: "Strong match", className: "text-success" };
