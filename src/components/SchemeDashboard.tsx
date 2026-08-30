@@ -55,6 +55,30 @@ export function SchemeDashboard({ profile, onRestart }: { profile: Profile; onRe
     .filter((r) => r.score >= 55)
     .reduce((sum, r) => sum + r.subsidy, 0);
 
+  if (isPending) {
+    return (
+      <section className="mx-auto w-full max-w-5xl" aria-live="polite">
+        <div className="surface-card p-8 text-center text-muted-foreground">
+          Checking the scheme database for your matches…
+        </div>
+      </section>
+    );
+  }
+
+  if (error) {
+    return (
+      <section className="mx-auto w-full max-w-5xl" aria-live="assertive">
+        <div className="surface-card p-8 text-center">
+          <p className="font-semibold">We could not load the schemes right now.</p>
+          <p className="mt-1 text-sm text-muted-foreground">Please try again in a moment.</p>
+          <Button variant="outline" className="mt-4" onClick={onRestart}>
+            Start again
+          </Button>
+        </div>
+      </section>
+    );
+  }
+
   return (
     <section id="dashboard" aria-labelledby="dash-heading" className="mx-auto w-full max-w-5xl">
       <div className="surface-card gradient-warm p-5 sm:p-7">
