@@ -1,4 +1,4 @@
-import { SCHEMES, type Category, type Scheme } from "./schemes";
+import type { Category, Scheme } from "./schemes";
 
 export type Profile = {
   income: number;
@@ -18,8 +18,8 @@ export type MatchResult = {
   gaps: string[];
 };
 
-export function matchSchemes(profile: Profile): MatchResult[] {
-  return SCHEMES.map((scheme) => {
+export function matchSchemes(profile: Profile, schemes: Scheme[]): MatchResult[] {
+  return schemes.map((scheme) => {
     const reasons: string[] = [];
     const gaps: string[] = [];
     let score = 0;

@@ -26,7 +26,7 @@ export const askAssistant = createServerFn({ method: "POST" })
     if (!key) throw new Error("AI assistant is not configured yet.");
 
     const lastUser = [...data.messages].reverse().find((m) => m.role === "user");
-    const context = retrieve(lastUser?.content ?? "").join("\n\n---\n\n");
+    const context = (await retrieve(lastUser?.content ?? "")).join("\n\n---\n\n");
 
     const gateway = createLovableAiGatewayProvider(key);
 

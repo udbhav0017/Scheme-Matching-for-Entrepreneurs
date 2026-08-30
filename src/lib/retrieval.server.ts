@@ -1,8 +1,10 @@
-import { SCHEMES, SCHEME_CORPUS } from "./schemes";
+import { buildCorpus, fetchSchemes } from "./schemes.server";
 
-/** Lightweight keyword retrieval over the scheme guideline corpus (RAG). */
-export function retrieve(query: string, limit = 4) {
-  const chunks = SCHEME_CORPUS.split("\n\n---\n\n");
+/** Lightweight keyword retrieval over the scheme guidelines stored in the database (RAG). */
+export async function retrieve(query: string, limit = 4) {
+  const schemes = await fetchSchemes();
+  const chunks = buildCorpus(schemes);
+
   const terms = query
     .toLowerCase()
     .split(/[^a-z0-9\u0900-\u097F]+/)
@@ -12,7 +14,7 @@ export function retrieve(query: string, limit = 4) {
     const hay = chunk.toLowerCase();
     let score = 0;
     for (const t of terms) if (hay.includes(t)) score += 1;
-    const s = SCHEMES[i];
+    const s = schemes[i];
     if (s && query.toLowerCase().includes(s.id.split("-")[0]!)) score += 3;
     return { chunk, score };
   });

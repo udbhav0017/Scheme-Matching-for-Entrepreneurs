@@ -1,9 +1,12 @@
+import { useQuery } from "@tanstack/react-query";
+import { useServerFn } from "@tanstack/react-start";
 import { AlertTriangle, ExternalLink, FileWarning, RotateCcw, Sparkles } from "lucide-react";
-import { useMemo, useState } from "react";
+import { useState } from "react";
 
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
-import { formatINR, matchSchemes, type MatchResult, type Profile } from "@/lib/matching";
+import { getMatchedSchemes } from "@/lib/matching.functions";
+import { formatINR, type MatchResult, type Profile } from "@/lib/matching";
 
 function scoreTone(score: number) {
   if (score >= 80) return { label: "Strong match", className: "text-success" };
@@ -40,12 +43,41 @@ function GuidanceCard({ match, onClose }: { match: MatchResult; onClose: () => v
 }
 
 export function SchemeDashboard({ profile, onRestart }: { profile: Profile; onRestart: () => void }) {
-  const results = useMemo(() => matchSchemes(profile), [profile]);
+  const matchFn = useServerFn(getMatchedSchemes);
+  const { data, isPending, error } = useQuery({
+    queryKey: ["scheme-matches", profile],
+    queryFn: () => matchFn({ data: profile }),
+  });
+  const results: MatchResult[] = data ?? [];
   const [openId, setOpenId] = useState<string | null>(null);
 
   const totalSubsidy = results
     .filter((r) => r.score >= 55)
     .reduce((sum, r) => sum + r.subsidy, 0);
+
+  if (isPending) {
+    return (
+      <section className="mx-auto w-full max-w-5xl" aria-live="polite">
+        <div className="surface-card p-8 text-center text-muted-foreground">
+          Checking the scheme database for your matches…
+        </div>
+      </section>
+    );
+  }
+
+  if (error) {
+    return (
+      <section className="mx-auto w-full max-w-5xl" aria-live="assertive">
+        <div className="surface-card p-8 text-center">
+          <p className="font-semibold">We could not load the schemes right now.</p>
+          <p className="mt-1 text-sm text-muted-foreground">Please try again in a moment.</p>
+          <Button variant="outline" className="mt-4" onClick={onRestart}>
+            Start again
+          </Button>
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section id="dashboard" aria-labelledby="dash-heading" className="mx-auto w-full max-w-5xl">
