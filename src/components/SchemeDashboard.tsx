@@ -43,7 +43,12 @@ function GuidanceCard({ match, onClose }: { match: MatchResult; onClose: () => v
 }
 
 export function SchemeDashboard({ profile, onRestart }: { profile: Profile; onRestart: () => void }) {
-  const results = useMemo(() => matchSchemes(profile), [profile]);
+  const matchFn = useServerFn(getMatchedSchemes);
+  const { data, isPending, error } = useQuery({
+    queryKey: ["scheme-matches", profile],
+    queryFn: () => matchFn({ data: profile }),
+  });
+  const results: MatchResult[] = data ?? [];
   const [openId, setOpenId] = useState<string | null>(null);
 
   const totalSubsidy = results
