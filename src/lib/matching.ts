@@ -1,4 +1,4 @@
-import { SCHEMES, type Category, type Scheme } from "./schemes";
+import type { Category, Scheme } from "./schemes";
 
 export type Profile = {
   income: number;
