@@ -14,7 +14,69 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      schemes: {
+        Row: {
+          apply_steps: string[]
+          apply_url: string
+          categories: string[]
+          created_at: string
+          documents: string[]
+          id: string
+          max_income: number
+          max_loan: number
+          min_loan: number
+          ministry: string
+          name: string
+          name_hi: string
+          sectors: string[]
+          states: string[]
+          subsidy_cap: number
+          subsidy_rate: number
+          summary: string
+          summary_hi: string
+        }
+        Insert: {
+          apply_steps?: string[]
+          apply_url: string
+          categories?: string[]
+          created_at?: string
+          documents?: string[]
+          id: string
+          max_income: number
+          max_loan: number
+          min_loan: number
+          ministry: string
+          name: string
+          name_hi: string
+          sectors?: string[]
+          states?: string[]
+          subsidy_cap: number
+          subsidy_rate: number
+          summary: string
+          summary_hi: string
+        }
+        Update: {
+          apply_steps?: string[]
+          apply_url?: string
+          categories?: string[]
+          created_at?: string
+          documents?: string[]
+          id?: string
+          max_income?: number
+          max_loan?: number
+          min_loan?: number
+          ministry?: string
+          name?: string
+          name_hi?: string
+          sectors?: string[]
+          states?: string[]
+          subsidy_cap?: number
+          subsidy_rate?: number
+          summary?: string
+          summary_hi?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
