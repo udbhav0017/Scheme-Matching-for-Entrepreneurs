@@ -1,4 +1,5 @@
-import { ArrowLeft, ArrowRight, CheckCircle2 } from "lucide-react";
+import { useServerFn } from "@tanstack/react-start";
+import { ArrowLeft, ArrowRight, CheckCircle2, Loader2 } from "lucide-react";
 import { useState } from "react";
 
 import { VoiceInput } from "@/components/VoiceInput";
@@ -7,6 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Progress } from "@/components/ui/progress";
 import type { Profile } from "@/lib/matching";
+import { saveUserProfile } from "@/lib/profiles.functions";
 import { CATEGORIES, SECTORS, STATES, type Category } from "@/lib/schemes";
 
 const DOCUMENTS = [
