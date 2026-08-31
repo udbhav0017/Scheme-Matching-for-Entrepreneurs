@@ -303,19 +303,34 @@ export function EligibilityWizard({ onComplete }: { onComplete: (p: Profile) => 
         )}
       </div>
 
+      {saveError && (
+        <p role="alert" className="mt-6 rounded-lg border border-destructive/40 bg-destructive/10 px-4 py-3 text-sm font-medium text-destructive">
+          We could not save your answers. Please check your connection and try again.
+        </p>
+      )}
+
       <div className="mt-8 flex items-center justify-between gap-3">
         <Button
           type="button"
           variant="outline"
           size="lg"
           onClick={() => setStep((s) => Math.max(0, s - 1))}
-          disabled={step === 0}
+          disabled={step === 0 || saving}
         >
           <ArrowLeft className="size-5" /> Back
         </Button>
-        <Button type="button" variant="hero" size="lg" onClick={next} disabled={!canContinue}>
-          {step === STEPS.length - 1 ? "See my schemes" : "Continue"}
-          <ArrowRight className="size-5" />
+        <Button type="button" variant="hero" size="lg" onClick={next} disabled={!canContinue || saving}>
+          {saving ? (
+            <>
+              Saving your answers…
+              <Loader2 className="size-5 animate-spin" aria-hidden />
+            </>
+          ) : (
+            <>
+              {step === STEPS.length - 1 ? "See my schemes" : "Continue"}
+              <ArrowRight className="size-5" />
+            </>
+          )}
         </Button>
       </div>
     </section>
