@@ -122,6 +122,29 @@ export function EligibilityWizard({ onComplete }: { onComplete: (p: Profile) => 
       <div className="mt-8 min-h-[19rem]" role="group" aria-live="polite">
         {step === 0 && (
           <div className="space-y-4">
+            <Label htmlFor="name" className="text-lg">
+              What is your name?
+            </Label>
+            <p className="text-sm text-muted-foreground">
+              आपका नाम क्या है? This helps us personalise your scheme guidance.
+            </p>
+            <Input
+              id="name"
+              className="h-14 text-lg"
+              value={name}
+              placeholder="e.g. Ramesh Kumar"
+              autoComplete="name"
+              onChange={(e) => setName(e.target.value)}
+            />
+            <VoiceInput
+              label="Speak your name"
+              onResult={(t) => setName(t.trim())}
+            />
+          </div>
+        )}
+
+        {step === 1 && (
+          <div className="space-y-4">
             <Label htmlFor="income" className="text-lg">
               What is your household annual income? (₹)
             </Label>
