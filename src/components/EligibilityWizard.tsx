@@ -75,6 +75,7 @@ export function EligibilityWizard({ onComplete }: { onComplete: (p: Profile) => 
       return;
     }
     const profile: Profile = {
+      name: name.trim(),
       income: Number(income),
       category: category as Category,
       sector,
