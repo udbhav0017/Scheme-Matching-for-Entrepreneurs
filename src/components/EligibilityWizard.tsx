@@ -53,6 +53,9 @@ export function EligibilityWizard({ onComplete }: { onComplete: (p: Profile) => 
   const [state, setState] = useState("");
   const [loan, setLoan] = useState<number | "">("");
   const [documents, setDocuments] = useState<string[]>([]);
+  const [saving, setSaving] = useState(false);
+  const [saveError, setSaveError] = useState(false);
+  const saveProfile = useServerFn(saveUserProfile);
 
   const canContinue = [
     income !== "",
@@ -63,19 +66,29 @@ export function EligibilityWizard({ onComplete }: { onComplete: (p: Profile) => 
     true,
   ][step];
 
-  const next = () => {
+  const next = async () => {
     if (step < STEPS.length - 1) {
       setStep(step + 1);
       return;
     }
-    onComplete({
+    const profile: Profile = {
       income: Number(income),
       category: category as Category,
       sector,
       state,
       loan: Number(loan),
       documents,
-    });
+    };
+    setSaving(true);
+    setSaveError(false);
+    try {
+      await saveProfile({ data: profile });
+      onComplete(profile);
+    } catch {
+      setSaveError(true);
+    } finally {
+      setSaving(false);
+    }
   };
 
   const toggleDoc = (doc: string) =>
