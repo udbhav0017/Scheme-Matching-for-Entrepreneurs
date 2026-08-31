@@ -27,6 +27,7 @@ const DOCUMENTS = [
 ];
 
 const STEPS = [
+  "Your name",
   "Annual income",
   "Caste category",
   "Business sector",
@@ -47,6 +48,7 @@ function parseSpokenNumber(text: string) {
 
 export function EligibilityWizard({ onComplete }: { onComplete: (p: Profile) => void }) {
   const [step, setStep] = useState(0);
+  const [name, setName] = useState("");
   const [income, setIncome] = useState<number | "">("");
   const [category, setCategory] = useState<Category | "">("");
   const [sector, setSector] = useState("");
@@ -58,6 +60,7 @@ export function EligibilityWizard({ onComplete }: { onComplete: (p: Profile) => 
   const saveProfile = useServerFn(saveUserProfile);
 
   const canContinue = [
+    name.trim() !== "",
     income !== "",
     category !== "",
     sector !== "",
