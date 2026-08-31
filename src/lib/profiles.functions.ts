@@ -2,6 +2,7 @@ import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 
 const ProfileInput = z.object({
+  name: z.string().trim().min(1, "Please enter your name").max(100),
   income: z.number().nonnegative(),
   category: z.enum(["SC", "ST", "OBC", "General", "Divyangjan", "Women"]),
   sector: z.string().min(1),
@@ -15,6 +16,7 @@ export const saveUserProfile = createServerFn({ method: "POST" })
   .handler(async ({ data }) => {
     const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
     const { error } = await supabaseAdmin.from("user_profiles").insert({
+      name: data.name,
       income: data.income,
       category: data.category,
       sector: data.sector,
