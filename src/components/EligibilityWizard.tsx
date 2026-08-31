@@ -176,7 +176,7 @@ export function EligibilityWizard({ onComplete }: { onComplete: (p: Profile) => 
           </div>
         )}
 
-        {step === 1 && (
+        {step === 2 && (
           <fieldset className="space-y-4">
             <legend className="text-lg font-medium">Which category do you belong to?</legend>
             <p className="text-sm text-muted-foreground">आप किस श्रेणी से हैं?</p>
@@ -206,7 +206,7 @@ export function EligibilityWizard({ onComplete }: { onComplete: (p: Profile) => 
           </fieldset>
         )}
 
-        {step === 2 && (
+        {step === 3 && (
           <fieldset className="space-y-4">
             <legend className="text-lg font-medium">What is your business sector?</legend>
             <p className="text-sm text-muted-foreground">आपका व्यवसाय किस क्षेत्र में है?</p>
@@ -236,7 +236,7 @@ export function EligibilityWizard({ onComplete }: { onComplete: (p: Profile) => 
           </fieldset>
         )}
 
-        {step === 3 && (
+        {step === 4 && (
           <div className="space-y-4">
             <Label htmlFor="state" className="text-lg">
               Which state do you live in?
@@ -265,7 +265,7 @@ export function EligibilityWizard({ onComplete }: { onComplete: (p: Profile) => 
           </div>
         )}
 
-        {step === 4 && (
+        {step === 5 && (
           <div className="space-y-4">
             <Label htmlFor="loan" className="text-lg">
               How much loan do you need? (₹)
@@ -296,7 +296,7 @@ export function EligibilityWizard({ onComplete }: { onComplete: (p: Profile) => 
           </div>
         )}
 
-        {step === 5 && (
+        {step === 6 && (
           <fieldset className="space-y-4">
             <legend className="text-lg font-medium">Which documents do you already have?</legend>
             <p className="text-sm text-muted-foreground">
