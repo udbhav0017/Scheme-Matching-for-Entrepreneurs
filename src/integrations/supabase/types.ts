@@ -85,6 +85,7 @@ export type Database = {
           id: string
           income: number
           loan: number
+          name: string | null
           sector: string
           state: string
           updated_at: string
@@ -96,6 +97,7 @@ export type Database = {
           id?: string
           income: number
           loan: number
+          name?: string | null
           sector: string
           state: string
           updated_at?: string
@@ -107,6 +109,7 @@ export type Database = {
           id?: string
           income?: number
           loan?: number
+          name?: string | null
           sector?: string
           state?: string
           updated_at?: string
