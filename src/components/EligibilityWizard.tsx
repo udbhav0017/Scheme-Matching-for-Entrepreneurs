@@ -1,4 +1,5 @@
-import { ArrowLeft, ArrowRight, CheckCircle2 } from "lucide-react";
+import { useServerFn } from "@tanstack/react-start";
+import { ArrowLeft, ArrowRight, CheckCircle2, Loader2 } from "lucide-react";
 import { useState } from "react";
 
 import { VoiceInput } from "@/components/VoiceInput";
@@ -7,6 +8,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Progress } from "@/components/ui/progress";
 import type { Profile } from "@/lib/matching";
+import { saveUserProfile } from "@/lib/profiles.functions";
 import { CATEGORIES, SECTORS, STATES, type Category } from "@/lib/schemes";
 
 const DOCUMENTS = [
@@ -51,6 +53,9 @@ export function EligibilityWizard({ onComplete }: { onComplete: (p: Profile) => 
   const [state, setState] = useState("");
   const [loan, setLoan] = useState<number | "">("");
   const [documents, setDocuments] = useState<string[]>([]);
+  const [saving, setSaving] = useState(false);
+  const [saveError, setSaveError] = useState(false);
+  const saveProfile = useServerFn(saveUserProfile);
 
   const canContinue = [
     income !== "",
@@ -61,19 +66,29 @@ export function EligibilityWizard({ onComplete }: { onComplete: (p: Profile) => 
     true,
   ][step];
 
-  const next = () => {
+  const next = async () => {
     if (step < STEPS.length - 1) {
       setStep(step + 1);
       return;
     }
-    onComplete({
+    const profile: Profile = {
       income: Number(income),
       category: category as Category,
       sector,
       state,
       loan: Number(loan),
       documents,
-    });
+    };
+    setSaving(true);
+    setSaveError(false);
+    try {
+      await saveProfile({ data: profile });
+      onComplete(profile);
+    } catch {
+      setSaveError(true);
+    } finally {
+      setSaving(false);
+    }
   };
 
   const toggleDoc = (doc: string) =>
@@ -288,19 +303,34 @@ export function EligibilityWizard({ onComplete }: { onComplete: (p: Profile) => 
         )}
       </div>
 
+      {saveError && (
+        <p role="alert" className="mt-6 rounded-lg border border-destructive/40 bg-destructive/10 px-4 py-3 text-sm font-medium text-destructive">
+          We could not save your answers. Please check your connection and try again.
+        </p>
+      )}
+
       <div className="mt-8 flex items-center justify-between gap-3">
         <Button
           type="button"
           variant="outline"
           size="lg"
           onClick={() => setStep((s) => Math.max(0, s - 1))}
-          disabled={step === 0}
+          disabled={step === 0 || saving}
         >
           <ArrowLeft className="size-5" /> Back
         </Button>
-        <Button type="button" variant="hero" size="lg" onClick={next} disabled={!canContinue}>
-          {step === STEPS.length - 1 ? "See my schemes" : "Continue"}
-          <ArrowRight className="size-5" />
+        <Button type="button" variant="hero" size="lg" onClick={next} disabled={!canContinue || saving}>
+          {saving ? (
+            <>
+              Saving your answers…
+              <Loader2 className="size-5 animate-spin" aria-hidden />
+            </>
+          ) : (
+            <>
+              {step === STEPS.length - 1 ? "See my schemes" : "Continue"}
+              <ArrowRight className="size-5" />
+            </>
+          )}
         </Button>
       </div>
     </section>
