@@ -27,6 +27,7 @@ const DOCUMENTS = [
 ];
 
 const STEPS = [
+  "Your name",
   "Annual income",
   "Caste category",
   "Business sector",
@@ -47,6 +48,7 @@ function parseSpokenNumber(text: string) {
 
 export function EligibilityWizard({ onComplete }: { onComplete: (p: Profile) => void }) {
   const [step, setStep] = useState(0);
+  const [name, setName] = useState("");
   const [income, setIncome] = useState<number | "">("");
   const [category, setCategory] = useState<Category | "">("");
   const [sector, setSector] = useState("");
@@ -58,6 +60,7 @@ export function EligibilityWizard({ onComplete }: { onComplete: (p: Profile) => 
   const saveProfile = useServerFn(saveUserProfile);
 
   const canContinue = [
+    name.trim() !== "",
     income !== "",
     category !== "",
     sector !== "",
@@ -72,6 +75,7 @@ export function EligibilityWizard({ onComplete }: { onComplete: (p: Profile) => 
       return;
     }
     const profile: Profile = {
+      name: name.trim(),
       income: Number(income),
       category: category as Category,
       sector,
@@ -118,6 +122,29 @@ export function EligibilityWizard({ onComplete }: { onComplete: (p: Profile) => 
       <div className="mt-8 min-h-[19rem]" role="group" aria-live="polite">
         {step === 0 && (
           <div className="space-y-4">
+            <Label htmlFor="name" className="text-lg">
+              What is your name?
+            </Label>
+            <p className="text-sm text-muted-foreground">
+              आपका नाम क्या है? This helps us personalise your scheme guidance.
+            </p>
+            <Input
+              id="name"
+              className="h-14 text-lg"
+              value={name}
+              placeholder="e.g. Ramesh Kumar"
+              autoComplete="name"
+              onChange={(e) => setName(e.target.value)}
+            />
+            <VoiceInput
+              label="Speak your name"
+              onResult={(t) => setName(t.trim())}
+            />
+          </div>
+        )}
+
+        {step === 1 && (
+          <div className="space-y-4">
             <Label htmlFor="income" className="text-lg">
               What is your household annual income? (₹)
             </Label>
@@ -149,7 +176,7 @@ export function EligibilityWizard({ onComplete }: { onComplete: (p: Profile) => 
           </div>
         )}
 
-        {step === 1 && (
+        {step === 2 && (
           <fieldset className="space-y-4">
             <legend className="text-lg font-medium">Which category do you belong to?</legend>
             <p className="text-sm text-muted-foreground">आप किस श्रेणी से हैं?</p>
@@ -179,7 +206,7 @@ export function EligibilityWizard({ onComplete }: { onComplete: (p: Profile) => 
           </fieldset>
         )}
 
-        {step === 2 && (
+        {step === 3 && (
           <fieldset className="space-y-4">
             <legend className="text-lg font-medium">What is your business sector?</legend>
             <p className="text-sm text-muted-foreground">आपका व्यवसाय किस क्षेत्र में है?</p>
@@ -209,7 +236,7 @@ export function EligibilityWizard({ onComplete }: { onComplete: (p: Profile) => 
           </fieldset>
         )}
 
-        {step === 3 && (
+        {step === 4 && (
           <div className="space-y-4">
             <Label htmlFor="state" className="text-lg">
               Which state do you live in?
@@ -238,7 +265,7 @@ export function EligibilityWizard({ onComplete }: { onComplete: (p: Profile) => 
           </div>
         )}
 
-        {step === 4 && (
+        {step === 5 && (
           <div className="space-y-4">
             <Label htmlFor="loan" className="text-lg">
               How much loan do you need? (₹)
@@ -269,7 +296,7 @@ export function EligibilityWizard({ onComplete }: { onComplete: (p: Profile) => 
           </div>
         )}
 
-        {step === 5 && (
+        {step === 6 && (
           <fieldset className="space-y-4">
             <legend className="text-lg font-medium">Which documents do you already have?</legend>
             <p className="text-sm text-muted-foreground">

@@ -1,6 +1,7 @@
 import type { Category, Scheme } from "./schemes";
 
 export type Profile = {
+  name: string;
   income: number;
   category: Category;
   sector: string;
