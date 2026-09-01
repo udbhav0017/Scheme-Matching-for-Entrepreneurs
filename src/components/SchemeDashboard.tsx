@@ -42,7 +42,13 @@ function GuidanceCard({ match, onClose }: { match: MatchResult; onClose: () => v
   );
 }
 
-export function SchemeDashboard({ profile, onRestart }: { profile: Profile; onRestart: () => void }) {
+export function SchemeDashboard({
+  profile,
+  onRestart,
+}: {
+  profile: Profile;
+  onRestart: () => void;
+}) {
   const matchFn = useServerFn(getMatchedSchemes);
   const { data, isPending, error } = useQuery({
     queryKey: ["scheme-matches", profile],
@@ -51,9 +57,7 @@ export function SchemeDashboard({ profile, onRestart }: { profile: Profile; onRe
   const results: MatchResult[] = data ?? [];
   const [openId, setOpenId] = useState<string | null>(null);
 
-  const totalSubsidy = results
-    .filter((r) => r.score >= 55)
-    .reduce((sum, r) => sum + r.subsidy, 0);
+  const totalSubsidy = results.filter((r) => r.score >= 55).reduce((sum, r) => sum + r.subsidy, 0);
 
   if (isPending) {
     return (
@@ -101,9 +105,7 @@ export function SchemeDashboard({ profile, onRestart }: { profile: Profile; onRe
             <p className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
               Schemes matched
             </p>
-            <p className="mt-1 text-2xl font-bold">
-              {results.filter((r) => r.score >= 55).length}
-            </p>
+            <p className="mt-1 text-2xl font-bold">{results.filter((r) => r.score >= 55).length}</p>
           </div>
           <div className="rounded-xl bg-card p-4">
             <p className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
@@ -192,9 +194,7 @@ export function SchemeDashboard({ profile, onRestart }: { profile: Profile; onRe
                 </Button>
               </div>
 
-              {openId === r.scheme.id && (
-                <GuidanceCard match={r} onClose={() => setOpenId(null)} />
-              )}
+              {openId === r.scheme.id && <GuidanceCard match={r} onClose={() => setOpenId(null)} />}
             </li>
           );
         })}

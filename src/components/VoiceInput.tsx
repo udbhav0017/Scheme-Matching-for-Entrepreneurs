@@ -74,7 +74,10 @@ export function VoiceInput({ onResult, lang = "hi-IN", label = "Speak your answe
       {listening ? <MicOff className="size-5" /> : <Mic className="size-5" />}
       <span>{listening ? "Listening… tap to stop" : label}</span>
       {listening && (
-        <span className="ml-1 inline-block size-2 animate-ping rounded-full bg-current" aria-hidden />
+        <span
+          className="ml-1 inline-block size-2 animate-ping rounded-full bg-current"
+          aria-hidden
+        />
       )}
     </Button>
   );

@@ -136,10 +136,7 @@ export function EligibilityWizard({ onComplete }: { onComplete: (p: Profile) => 
               autoComplete="name"
               onChange={(e) => setName(e.target.value)}
             />
-            <VoiceInput
-              label="Speak your name"
-              onResult={(t) => setName(t.trim())}
-            />
+            <VoiceInput label="Speak your name" onResult={(t) => setName(t.trim())} />
           </div>
         )}
 
@@ -331,7 +328,10 @@ export function EligibilityWizard({ onComplete }: { onComplete: (p: Profile) => 
       </div>
 
       {saveError && (
-        <p role="alert" className="mt-6 rounded-lg border border-destructive/40 bg-destructive/10 px-4 py-3 text-sm font-medium text-destructive">
+        <p
+          role="alert"
+          className="mt-6 rounded-lg border border-destructive/40 bg-destructive/10 px-4 py-3 text-sm font-medium text-destructive"
+        >
           We could not save your answers. Please check your connection and try again.
         </p>
       )}
@@ -346,7 +346,13 @@ export function EligibilityWizard({ onComplete }: { onComplete: (p: Profile) => 
         >
           <ArrowLeft className="size-5" /> Back
         </Button>
-        <Button type="button" variant="hero" size="lg" onClick={next} disabled={!canContinue || saving}>
+        <Button
+          type="button"
+          variant="hero"
+          size="lg"
+          onClick={next}
+          disabled={!canContinue || saving}
+        >
           {saving ? (
             <>
               Saving your answers…
