@@ -17,8 +17,16 @@ const GREETING: Record<"en" | "hi", string> = {
 };
 
 const SUGGESTIONS: Record<"en" | "hi", string[]> = {
-  en: ["Which scheme suits an SC woman baker?", "What documents does PMEGP need?", "Is MUDRA collateral-free?"],
-  hi: ["पीएमईजीपी में कितनी सब्सिडी मिलती है?", "मुद्रा लोन कैसे लें?", "दिव्यांगजन के लिए कौन सी योजना है?"],
+  en: [
+    "Which scheme suits an SC woman baker?",
+    "What documents does PMEGP need?",
+    "Is MUDRA collateral-free?",
+  ],
+  hi: [
+    "पीएमईजीपी में कितनी सब्सिडी मिलती है?",
+    "मुद्रा लोन कैसे लें?",
+    "दिव्यांगजन के लिए कौन सी योजना है?",
+  ],
 };
 
 export function ChatAssistant({ profile }: { profile?: Profile | null }) {

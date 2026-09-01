@@ -92,7 +92,12 @@
   --border: oklch(0.89 0.02 80);
   --input: oklch(0.89 0.02 80);
   --ring: oklch(0.55 0.14 45);
-  --gradient-hero: linear-gradient(135deg, oklch(0.52 0.16 42) 0%, oklch(0.4 0.1 20) 55%, oklch(0.38 0.09 195) 100%);
+  --gradient-hero: linear-gradient(
+    135deg,
+    oklch(0.52 0.16 42) 0%,
+    oklch(0.4 0.1 20) 55%,
+    oklch(0.38 0.09 195) 100%
+  );
   --gradient-warm: linear-gradient(140deg, oklch(0.97 0.03 85) 0%, oklch(0.94 0.05 60) 100%);
   --shadow-soft: 0 1px 2px oklch(0.3 0.05 50 / 0.06), 0 8px 24px oklch(0.3 0.05 50 / 0.08);
   --shadow-elevated: 0 12px 40px oklch(0.3 0.08 40 / 0.18);
@@ -116,7 +121,12 @@
   --success-foreground: oklch(0.15 0.02 150);
   --warning: oklch(0.78 0.15 75);
   --warning-foreground: oklch(0.2 0.04 60);
-  --gradient-hero: linear-gradient(135deg, oklch(0.42 0.14 42) 0%, oklch(0.3 0.08 20) 55%, oklch(0.3 0.08 195) 100%);
+  --gradient-hero: linear-gradient(
+    135deg,
+    oklch(0.42 0.14 42) 0%,
+    oklch(0.3 0.08 20) 55%,
+    oklch(0.3 0.08 195) 100%
+  );
   --gradient-warm: linear-gradient(140deg, oklch(0.24 0.03 60) 0%, oklch(0.2 0.03 40) 100%);
   --shadow-soft: 0 1px 2px oklch(0 0 0 / 0.3), 0 8px 24px oklch(0 0 0 / 0.35);
   --shadow-elevated: 0 12px 40px oklch(0 0 0 / 0.45);
@@ -169,7 +179,9 @@
   html {
     font-family: var(--font-sans);
   }
-  h1, h2, h3 {
+  h1,
+  h2,
+  h3 {
     font-family: var(--font-display);
     letter-spacing: -0.01em;
   }
